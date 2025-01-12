@@ -28,6 +28,7 @@ const connect = () => {
 };
 
 // Routes
+app.use(express.json());
 app.use("/api/auth", userAuth);
 app.use("/api/users", userRoutes);
 app.use("/api/video", userVideo);
