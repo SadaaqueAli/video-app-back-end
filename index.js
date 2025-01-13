@@ -5,6 +5,7 @@ import userRoutes from "./routes/users.js";
 import userVideo from "./routes/video.js";
 import userComment from "./routes/comments.js";
 import userAuth from "./routes/auth.js";
+import cookieParser from "cookie-parser"
 
 
 
@@ -28,14 +29,24 @@ const connect = () => {
 };
 
 // Routes
+app.use(cookieParser())
 app.use(express.json());
 app.use("/api/auth", userAuth);
 app.use("/api/users", userRoutes);
 app.use("/api/video", userVideo);
 app.use("/api/comment", userComment);
 
+app.use((err, req, res, next)=>{
+    const status = err.status || 500;
+    const message = err.message || "some thing went wrong";
+return res.status(status).json({
+    success:false,
+    status,
+    message,
 
+})
 
+})
 
 
 // Start Server
