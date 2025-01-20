@@ -33,7 +33,7 @@ app.use(cookieParser())
 app.use(express.json());
 app.use("/api/auth", userAuth);
 app.use("/api/users", userRoutes);
-app.use("/api/video", userVideo);
+app.use("/api/videos", userVideo);
 app.use("/api/comment", userComment);
 
 app.use((err, req, res, next)=>{
