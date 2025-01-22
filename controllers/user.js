@@ -1,4 +1,5 @@
 import User from "../modles/User.js";
+import Video from "../modles/Video.js";
 import createError from "../error.js";
 
 export const update = async (req, res, next) => {
@@ -70,29 +71,42 @@ export const unsubscribe = async (req, res, next) => {
         
     }
 };
-//like a video
+// like
 export const like = async (req, res, next) => {
-    try {
-        
-    } catch (error) {
-        
-    }
+  const id = req.user.id;
+  const videoId = req.params.videoId;
+  try {
+    await Video.findByIdAndUpdate(videoId,{
+      $addToSet:{likes:id},
+      $pull:{dislikes:id}
+    })
+    res.status(200).json("The video has been liked.")
+  } catch (err) {
+    next(err);
+  }
 };
-//dislike a video
+//dislike
 export const dislike = async (req, res, next) => {
+    const id = req.user.id;
+    const videoId = req.params.videoId;
     try {
-        
-    } catch (error) {
-        
-    }
+      await Video.findByIdAndUpdate(videoId,{
+        $addToSet:{dislikes:id},
+        $pull:{likes:id}
+      })
+      res.status(200).json("The video has been disliked.")
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const getByTag = async (req, res, next) => {
   const tags = req.query.tags.split(",");
   console.log(tags)
   try {
-    const videos = await Video.find().sort({ views: -1 });
+    const videos = await Video.find({tags:{$in:tags}}).limit(20);
     res.status(200).json(videos);
+    console.log(videos)
   } catch (err) {
     next(err);
   }
