@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import userRoutes from "./routes/users.js";
 import userVideo from "./routes/video.js";
 import userComment from "./routes/comments.js";
@@ -14,6 +15,7 @@ const app = express();
 dotenv.config();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
